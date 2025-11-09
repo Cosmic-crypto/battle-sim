@@ -1,114 +1,182 @@
-🥷 Battle Simulator
-A simple Python text-based battle simulation between two warriors.
-Each round, a random action occurs — either an attack or a heal — until one (or both) warriors fall.
+⚔️ Python Battle Arena
 
-⚔️ Features
+A turn-based battle simulator built in Python where players create custom warriors, assign them to teams, and watch them fight automatically — with random attacks, healing, and even divine intervention!
 
+Supports:
 
-Two warriors fight in turn-based style
+Free-for-all battles
 
+Team-based battles
 
-Randomized actions each round (attack or heal)
+Custom player names
 
+Different classes (Warrior, Archer, Mage)
 
-Real-time updates with health tracking
+Dynamic logging to battle_log.txt
 
+🧩 Features
+🎮 Interactive Setup
 
-Automatic victory/draw detection
+Create as many warriors as you want.
 
+Choose between Free-for-All or Team Battle.
 
-Easy to extend with new actions (like critical hits or defense)
+Assign each warrior a name, team, and class type:
 
+🛡️ Warrior – Slightly reduced healing but steady attacks.
 
+🏹 Archer – Stronger attack power.
 
-🧩 How It Works
-Each round:
+🔮 Mage – Stronger healing and magical attacks.
 
+⚔️ Dynamic Battle Simulation
 
-A random action (attack or heal) is chosen.
+Each round, random warriors perform actions:
 
+Attack enemies
 
-The chosen action prints a short description.
+Heal themselves or allies
 
+Health automatically caps at 100.
 
-The corresponding function runs — adjusting health.
+Fallen warriors are announced in real time.
 
+✝️ Divine Intervention
 
-The current health of both warriors is displayed.
+At any moment, press Ctrl + C to pause and:
 
+end – Stop the battle early
 
-The loop repeats until one or both warriors reach 0 health.
+heal – Heal a warrior manually
 
+attack – Smite a warrior manually
 
-Example output:
+📜 Automatic Battle Log
+
+All events (rounds, actions, and results) are saved to:
+
+battle_log.txt
+
+🧠 Example Gameplay
 ```
-⚔️  Round 3
-➡️  Warrior 2 attacks Warrior 1
-Warrior 2 attacks Warrior 1 for 15 damage!
-❤️  Warrior 1 Health: 70
-❤️  Warrior 2 Health: 90
+Setup:
+
+⚔️ Welcome to the Python Battle Arena!
+Create your warriors (press Ctrl+C when done)
+
+Enter name for Warrior 1: Luke
+Enter team (Team 1, Team 2): Team A
+Enter type (Warrior, Archer, Mage): Warrior
+
+Enter name for Warrior 2: Zara
+Enter team (Team 1, Team 2): Team B
+Enter type (Warrior, Archer, Mage): Mage
+
+✅ Warriors have been created:
+
+- Luke (Health: 100, Damage: 20, Team: Team A)
+- Zara (Health: 100, Damage: 20, Team: Team B)
+```
+Battle Sample:
+```
+⚔️ Round 1
+➡️ Luke attacks Zara
+Luke attacks Zara for 12 damage!
+❤️ Luke Health: 100
+❤️ Zara Health: 88
 ----------------------------------------
+➡️ Zara heals
+Zara heals for 7 health!
+❤️ Luke Health: 100
+❤️ Zara Health: 95
+----------------------------------------
+💀 None have fallen yet!
+```
+Divine Intervention:
+```
+✝️ Divine intervention!
+1: Luke (Health: 100)
+2: Zara (Health: 95)
+Do you want to 'end', 'heal', or 'attack'?: heal
+Enter target number (1–2) and amount separated by a comma (e.g. '2,20'): 1,15
+Luke heals for 15 health!
+Divine intervention executed!
+```
+⚙️ How It Works
+
+Each warrior is an instance of a class derived from the Player base:
+
+`attack()` reduces another player’s health.
+
+`heal()` increases the player’s health.
+
+`Mage`, `Archer`, and `Warrior` modify these effects with multipliers.
+
+Example logic:
+```py
+enemies = [w for w in alive if w.team != attacker.team and w.health > 0]
 ```
 
-🧠 Code Overview
+Ensures a warrior only attacks alive enemies — not teammates or the dead.
+
+🧱 Code Structure
 ```
-# Create warriors
-warrior1 = Player("Warrior 1", 100, 15, 10)
-warrior2 = Player("Warrior 2", 100, 15, 10)
-
-# Define possible actions
-actions = [
-    (lambda: warrior1.attack(warrior2), "Warrior 1 attacks Warrior 2"),
-    (lambda: warrior2.attack(warrior1), "Warrior 2 attacks Warrior 1"),
-    (lambda: warrior1.heal(10), "Warrior 1 heals"),
-    (lambda: warrior2.heal(10), "Warrior 2 heals")
-]
-
-# Pick a random tuple (function, description)
-action_func, description = random.choice(actions)
-print(description)
-action_func()
+battle_arena.py
+├── class Player
+│   ├── attack()
+│   ├── heal()
+├── class Warrior(Player)
+├── class Archer(Player)
+├── class Mage(Player)
+├── Battle setup (interactive)
+├── Main game loop
+│   ├── Random actions
+│   ├── Health checks
+│   ├── Logging
+│   ├── Divine intervention
+└── Result output + file logging
 ```
-Each lambda stores a callable action that doesn’t run until selected, so actions can be randomized without being pre-executed.
-
-🏃 How to Run
-
-
-Make sure you have Python 3.7+ installed.
-
-
-Save the script as `battle_simulator.py`.
-
-
-Open a terminal in the script’s directory.
-
-
-Run:
+🧰 Requirements
 ```
-python battle_simulator.py
+Python 3.8+
+```
+No external libraries required (uses only random and time)
 
+🚀 How to Run
+
+Clone or download the project.
+
+Open a terminal in the project folder.
+
+Run the script:
+```
+python battle_arena.py
 ```
 
+Follow the on-screen prompts to create your warriors and start the battle!
 
-🛠️ Future Ideas
+🏆 Win Conditions
 
+The battle continues until only one team (or one player) remains alive.
 
-Add random damage variation (random.randint)
+If everyone dies simultaneously, it’s declared a draw.
 
+The winner is displayed and logged automatically.
 
-Add critical hits or misses
+📄 Log Example
+```
+⚔️  Battle Start!
 
-
-Add defense or armor stats
-
-
-Add more than two players
-
-
-Turn it into a GUI or web game
-
-
-
-👨‍💻 Author
-Made by you — with help from ChatGPT 🤖
-A fun little Python project to practice OOP, randomness, and game loops.
+⚔️  Round 1
+➡️  Luke attacks Zara
+Luke attacks Zara for 17 damage!
+❤️  Luke Health: 100
+❤️  Zara Health: 83
+----------------------------------------
+➡️  Zara heals
+Zara heals for 5 health!
+❤️  Luke Health: 100
+❤️  Zara Health: 88
+----------------------------------------
+🏆 Team A wins!
+```
